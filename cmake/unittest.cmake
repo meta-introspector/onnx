@@ -8,7 +8,7 @@ include(CTest)
 
 find_package(Threads)
 
-set(${UT_NAME}_libs ${googletest_STATIC_LIBRARIES})
+set(${UT_NAME}_libs ${GTEST_LIBRARIES})
 
 list(APPEND ${UT_NAME}_libs onnx)
 list(APPEND ${UT_NAME}_libs onnx_proto)
@@ -24,12 +24,14 @@ function(AddTest)
 
   add_executable(${_UT_TARGET} ${_UT_SOURCES})
   add_dependencies(${_UT_TARGET} onnx onnx_proto)
+
   if(NOT GTest_FOUND)
     add_dependencies(${_UT_TARGET} googletest)
   endif()
 
+
   target_include_directories(${_UT_TARGET}
-                             PUBLIC ${googletest_INCLUDE_DIRS}
+                             PUBLIC ${GTEST_INCLUDE_DIRS}
                                     ${ONNX_INCLUDE_DIRS}
                                     ${PROTOBUF_INCLUDE_DIRS}
                                     ${ONNX_ROOT}
