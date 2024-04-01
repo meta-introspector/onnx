@@ -583,11 +583,10 @@ if(BUILD_ONNX_PYTHON)
                           PRIVATE $<TARGET_OBJECTS:onnx>)
   else()
     # Assume everything else is like gcc
-    target_link_libraries(onnx_cpp2py_export
-                          PRIVATE "-Wl,--whole-archive" $<TARGET_FILE:onnx>
-                                  "-Wl,--no-whole-archive")
+    target_link_libraries(onnx_cpp2py_export PRIVATE onnx)
     set_target_properties(onnx_cpp2py_export
-                          PROPERTIES LINK_FLAGS "-Wl,--exclude-libs,ALL")
+                          PROPERTIES LINK_FLAGS
+			  "-Wl,-rpath=${CMAKE_INSTALL_PREFIX}/lib")
   endif()
 
   target_link_libraries(onnx_cpp2py_export PRIVATE onnx)
